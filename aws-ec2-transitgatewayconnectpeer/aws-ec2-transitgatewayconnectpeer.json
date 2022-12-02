@@ -1,0 +1,123 @@
+{
+  "typeName": "AWS::EC2::TransitGatewayConnectPeer",
+  "description": "Resource Type definition for AWS::EC2::TransitGatewayConnectPeer",
+  "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-rpdk.git",
+  "additionalProperties": false,
+  "properties": {
+    "TransitGatewayConnectPeerId": {
+      "description": "The ID of the Connect Peer.",
+      "type": "string"
+    },
+    "TransitGatewayAttachmentId": {
+      "description": "The ID of the Connect attachment.",
+      "type": "string"
+    },
+    "TransitGatewayAddress": {
+      "description": "The peer IP address (GRE outer IP address) on the transit gateway side of the Connect peer, which must be specified from a transit gateway CIDR block. If not specified, Amazon automatically assigns the first available IP address from the transit gateway CIDR block.",
+      "type": "string"
+    },
+    "PeerAddress": {
+      "description": "The peer IP address (GRE outer IP address) on the appliance side of the Connect peer.",
+      "type": "string"
+    },
+    "BgpOptions": {
+      "description": "The BGP options for the Connect peer.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "PeerAsn": {
+          "description": "The peer Autonomous System Number (ASN).",
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "InsideCidrBlocks": {
+      "description": "The range of inside IP addresses that are used for BGP peering. You must specify a size /29 IPv4 CIDR block from the 169.254.0.0/16 range. The first address from the range must be configured on the appliance as the BGP IP address. You can also optionally specify a size /125 IPv6 CIDR block from the fd00::/8 range.",
+      "type": "array",
+      "insertionOrder": false,
+      "uniqueItems": false,
+      "items": {
+        "type": "string"
+      }
+    },
+    "Tags": {
+      "type": "array",
+      "uniqueItems": false,
+      "insertionOrder": false,
+      "items": {
+        "$ref": "#/definitions/Tag"
+      }
+    }
+  },
+  "definitions": {
+    "Tag": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Key": {
+          "type": "string"
+        },
+        "Value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "Value",
+        "Key"
+      ]
+    }
+  },
+  "required": [
+    "TransitGatewayAttachmentId",
+    "PeerAddress",
+    "InsideCidrBlocks"
+  ],
+  "createOnlyProperties": [
+    "/properties/TransitGatewayAttachmentId",
+    "/properties/TransitGatewayAddress",
+    "/properties/PeerAddress",
+    "/properties/BgpOptions",
+    "/properties/InsideCidrBlocks",
+    "/properties/TagSpecifications"
+  ],
+  "readOnlyProperties": [
+    "/properties/TransitGatewayConnectPeerId"
+  ],
+  "primaryIdentifier": [
+    "/properties/TransitGatewayConnectPeerId"
+  ],
+  "handlers": {
+    "create": {
+      "permissions": [
+        "ec2:CreateTransitGatewayConnectPeer",
+        "ec2:DescribeTransitGatewayConnectsPeer",
+        "ec2:CreateTags"
+      ]
+    },
+    "read": {
+      "permissions": [
+        "ec2:DescribeTransitGatewayConnectPeers"
+      ]
+    },
+    "update": {
+      "permissions": [
+        "ec2:DescribeTransitGatewayConnectPeers",
+        "ec2:DeleteTags",
+        "ec2:CreateTags"
+      ]
+    },
+    "delete": {
+      "permissions": [
+        "ec2:DeleteTransitGatewayConnectPeer",
+        "ec2:DescribeTransitGatewayConnectPeers",
+        "ec2:DeleteTags"
+      ]
+    },
+    "list": {
+      "permissions": [
+        "ec2:DescribeTransitGatewayConnectPeers"
+      ]
+    }
+  }
+}
