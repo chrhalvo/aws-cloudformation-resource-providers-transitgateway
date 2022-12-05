@@ -1,27 +1,22 @@
 package software.amazon.ec2.transitgatewayconnectpeer;
 
-import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
-import software.amazon.cloudformation.proxy.Logger;
-import software.amazon.cloudformation.proxy.ProgressEvent;
-import software.amazon.cloudformation.proxy.OperationStatus;
-import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
+import software.amazon.ec2.transitgatewayconnectpeer.workflow.delete.Delete;
+import software.amazon.ec2.transitgatewayconnectpeer.workflow.delete.ValidCurrentStateCheck;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.cloudformation.proxy.*;
 
-public class DeleteHandler extends BaseHandler<CallbackContext> {
+public class DeleteHandler extends BaseHandlerStd {
 
-    @Override
-    public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
-        final AmazonWebServicesClientProxy proxy,
-        final ResourceHandlerRequest<ResourceModel> request,
-        final CallbackContext callbackContext,
-        final Logger logger) {
-
-        final ResourceModel model = request.getDesiredResourceState();
-
-        // TODO : put your code here
-
-        return ProgressEvent.<ResourceModel, CallbackContext>builder()
-            .resourceModel(model)
-            .status(OperationStatus.SUCCESS)
-            .build();
+    protected ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+            final AmazonWebServicesClientProxy proxy,
+            final ResourceHandlerRequest<ResourceModel> request,
+            final CallbackContext callbackContext,
+            final ProxyClient<Ec2Client> proxyClient,
+            final Logger logger) {
+        return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
+                .then(new ValidCurrentStateCheck(proxy, request, callbackContext, proxyClient, logger)::run)
+                .then(new Delete(proxy, request, callbackContext, proxyClient, logger)::run)
+                .then(_progress -> ProgressEvent.defaultSuccessHandler(null)); //After delete successfully completes we want to return a null response because the model no longer exits
     }
 }
+

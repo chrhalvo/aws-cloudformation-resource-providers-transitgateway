@@ -20,6 +20,10 @@
       "description": "The peer IP address (GRE outer IP address) on the appliance side of the Connect peer.",
       "type": "string"
     },
+    "State": {
+      "description": "The state of the attachment.",
+      "type": "string"
+    },
     "BgpOptions": {
       "description": "The BGP options for the Connect peer.",
       "type": "object",
@@ -82,7 +86,8 @@
     "/properties/TagSpecifications"
   ],
   "readOnlyProperties": [
-    "/properties/TransitGatewayConnectPeerId"
+    "/properties/TransitGatewayConnectPeerId",
+    "/properties/State"
   ],
   "primaryIdentifier": [
     "/properties/TransitGatewayConnectPeerId"

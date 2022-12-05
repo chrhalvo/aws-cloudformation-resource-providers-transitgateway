@@ -30,11 +30,11 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                - "initech:CreateReport"
-                - "initech:DeleteReport"
-                - "initech:DescribeReport"
-                - "initech:ListReports"
-                - "initech:UpdateReport"
+                - "ec2:CreateTags"
+                - "ec2:CreateTransitGatewayConnectPeer"
+                - "ec2:DeleteTags"
+                - "ec2:DeleteTransitGatewayConnectPeer"
+                - "ec2:DescribeTransitGatewayConnectPeers"
                 Resource: "*"
 Outputs:
   ExecutionRoleArn:

@@ -1,30 +1,20 @@
 package software.amazon.ec2.transitgatewayconnectpeer;
 
-import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
-import software.amazon.cloudformation.proxy.Logger;
-import software.amazon.cloudformation.proxy.ProgressEvent;
-import software.amazon.cloudformation.proxy.OperationStatus;
-import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
+import software.amazon.ec2.transitgatewayconnectpeer.workflow.list.List;
+import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.cloudformation.proxy.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ListHandler extends BaseHandler<CallbackContext> {
+public class ListHandler extends BaseHandlerStd {
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
-        final AmazonWebServicesClientProxy proxy,
-        final ResourceHandlerRequest<ResourceModel> request,
-        final CallbackContext callbackContext,
-        final Logger logger) {
-
-        final List<ResourceModel> models = new ArrayList<>();
-
-        // TODO : put your code here
-
-        return ProgressEvent.<ResourceModel, CallbackContext>builder()
-            .resourceModels(models)
-            .status(OperationStatus.SUCCESS)
-            .build();
+            final AmazonWebServicesClientProxy proxy,
+            final ResourceHandlerRequest<ResourceModel> request,
+            final CallbackContext callbackContext,
+            final ProxyClient <Ec2Client> proxyClient,
+            final Logger logger) {
+        return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
+                .then(new List(proxy, request, callbackContext, proxyClient, logger)::run);
     }
 }
+
