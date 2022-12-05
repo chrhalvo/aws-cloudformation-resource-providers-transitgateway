@@ -91,7 +91,7 @@
     "create": {
       "permissions": [
         "ec2:CreateTransitGatewayConnectPeer",
-        "ec2:DescribeTransitGatewayConnectsPeer",
+        "ec2:DescribeTransitGatewayConnectPeers",
         "ec2:CreateTags"
       ]
     },
